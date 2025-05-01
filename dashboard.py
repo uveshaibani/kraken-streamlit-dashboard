@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import ta
 from datetime import datetime
+import os
 
 # ========== CONFIG ==========
 SYMBOLS = ['XXBTZUSD', 'XETHZUSD', 'SOLUSD', 'XRPUSD']
@@ -10,6 +11,7 @@ INTERVAL = 1
 STOP_LOSS_PCT = 0.01
 TAKE_PROFIT_PCT = 0.015
 CANDLE_LIMIT = 200
+TELEGRAM_LOG = "telegram_trades.csv"
 
 # ========== PAGE SETUP ==========
 st.set_page_config(page_title="Uvesh's Crypto Bot Dashboard", page_icon="📈", layout="wide")
@@ -115,6 +117,15 @@ with col2:
 
     st.markdown("---")
     st.write("**Last updated:**", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
+
+# ========== TELEGRAM TRADE LOG ==========
+st.markdown("---")
+st.subheader("📬 Telegram Trade Log")
+if os.path.exists(TELEGRAM_LOG):
+    df_log = pd.read_csv(TELEGRAM_LOG)
+    st.dataframe(df_log.tail(10))
+else:
+    st.info("No telegram_trades.csv file found. Make sure your bot logs trades to it.")
 
 # ========== FOOTER ==========
 st.markdown("""
