@@ -11,6 +11,35 @@ STOP_LOSS_PCT = 0.01
 TAKE_PROFIT_PCT = 0.015
 CANDLE_LIMIT = 200
 
+# ========== PAGE SETUP ==========
+st.set_page_config(page_title="Uvesh's Crypto Bot Dashboard", page_icon="📈", layout="wide")
+
+# ========== HEADER ==========
+st.markdown("""
+    <style>
+        .main-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #10c5ff;
+        }
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            text-align: center;
+            color: gray;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown("<div class='main-title'>📈 Uvesh's Live Crypto Trading Dashboard</div>", unsafe_allow_html=True)
+
+st.markdown("""
+This dashboard simulates crypto trades in real-time using:
+**RSI**, **EMA Crossover**, **MACD**, and **Bollinger Bands**.
+Built with ❤️ using Python + Streamlit + Kraken API.
+---
+""")
+
 # ========== DATA FUNCTIONS ==========
 def fetch_ohlcv(symbol, interval=1):
     url = f'https://api.kraken.com/0/public/OHLC?pair={symbol}&interval={interval}'
@@ -58,10 +87,7 @@ def evaluate_signal(row):
 
     return action, signals
 
-# ========== STREAMLIT DASHBOARD ==========
-st.set_page_config(page_title="Kraken Crypto Bot Dashboard", layout="wide")
-st.title("📊 Kraken Crypto Paper Bot Dashboard")
-
+# ========== DASHBOARD ==========
 col1, col2 = st.columns([1, 3])
 
 with col1:
@@ -81,7 +107,7 @@ with col1:
     st.dataframe(pd.DataFrame(status_table))
 
 with col2:
-    st.subheader("📈 Live Charts")
+    st.subheader("📈 Live Chart View")
     selected_symbol = st.selectbox("Choose a symbol to display:", SYMBOLS)
     df = fetch_ohlcv(selected_symbol, INTERVAL)
     df = get_signals(df)
@@ -89,3 +115,10 @@ with col2:
 
     st.markdown("---")
     st.write("**Last updated:**", datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC'))
+
+# ========== FOOTER ==========
+st.markdown("""
+<div class='footer'>
+Built by <a href='https://www.linkedin.com/in/uvesh-aibani-60b67a250/' target='_blank'>Uvesh Aibani</a> | Follow me on <a href='https://github.com/uveshaibani' target='_blank'>GitHub</a>
+</div>
+""", unsafe_allow_html=True)
